@@ -1,0 +1,6 @@
+@MailServiceInterface_HostAddress = http://localhost:5147
+
+GET {{MailServiceInterface_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
