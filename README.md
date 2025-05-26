@@ -9,7 +9,7 @@ The file should look like this:
   SmtpPassword: "App Password"
   SmtpPort: port like [587]
   SSLEnabled: true/false
-  EmailFrom: "Yout@mailAddress"
+  EmailFrom: "You@mailAddress"
 ```
 
 - In Terminal run command
