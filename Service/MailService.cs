@@ -10,10 +10,10 @@ public class MailService {
         private string emailFromAddress = "";
         private string password = ""; //Sender Password, like AppPassword from Gmail
 
-        private List<string> Receivers = new List<string>();
+        private List<string> To = new List<string>();
         private string subject = "";  
         private string body = "";  
-        public MailService(List<string> receivers, string subject, string body) 
+        public MailService(List<string> to, string subject, string body) 
         {
             var deserializer = new DeserializerBuilder()
                 .Build();
@@ -29,15 +29,15 @@ public class MailService {
                 this.enableSSL = currentSettings.SSLEnabled;
                 this.emailFromAddress = currentSettings.EmailFrom;
             }
-            this.Receivers = receivers;
+            this.To = to;
             this.subject = subject;
             this.body = body;
         }  
         public bool SendEmail() {  
             using(MailMessage mail = new MailMessage()) {  
                 mail.From = new MailAddress(emailFromAddress);  
-                foreach(var receiver in Receivers) {
-                    mail.To.Add(receiver);  
+                foreach(var receiver in To) {
+                    mail.To.Add(receiver); 
                 }
                 mail.Subject = subject;  
                 mail.Body = body;  
