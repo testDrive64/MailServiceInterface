@@ -28,7 +28,7 @@ public class Mail
     /// The <see cref="Receivers"/> is a <see langword="List<string>"/>
     /// that you use to define a list of E-Mail receivers.
     /// </remark>
-    public List<string> Receivers { get; set; } = new List<string>();
+    public List<string> To { get; set; } = new List<string>();
     public string? Subject { get; set; }
     public string? Body { get; set; }
 }
