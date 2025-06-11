@@ -17,7 +17,7 @@ public class MailServiceController : ControllerBase
     [HttpPost(Name = "PostMail")]
     public IActionResult Post(Mail newMail) 
     {
-        MailService service = new MailService(newMail.Receivers, newMail.Subject, newMail.Body);
+        MailService service = new MailService(newMail.To, newMail.Subject, newMail.Body);
         if(service.SendEmail())
             return Ok(newMail);
         else
