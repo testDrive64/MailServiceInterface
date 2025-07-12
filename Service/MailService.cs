@@ -11,12 +11,16 @@ public class MailService {
         private string emailFromAddress = "";
         private string password = ""; //Sender Password, like AppPassword from Gmail
 
-        private List<string> Receivers = new List<string>();
+        private List<string> To = new List<string>();
         private string subject = "";  
         private string body = "";  
+<<<<<<< HEAD
         private string attachments = "";
 
         public MailService(List<string> receivers, string subject, string body, string attachments) 
+=======
+        public MailService(List<string> to, string subject, string body) 
+>>>>>>> 41e62cf97c105b020e43661a26cb70d7630aeb28
         {
             var deserializer = new DeserializerBuilder()
                 .Build();
@@ -24,6 +28,7 @@ public class MailService {
             if (!File.Exists(settingsFile)) {
                 throw new Exception("Settings File does not exists.");
             }
+<<<<<<< HEAD
             using (StreamReader sr = File.OpenText(settingsFile)) {
                 try
                 {
@@ -41,6 +46,17 @@ public class MailService {
                 }
                             }
             this.Receivers = receivers;
+=======
+            using (var sr = File.OpenText(settingsFile)) {
+                MailSettings currentSettings = deserializer.Deserialize<MailSettings>(sr);
+                this.smtpAddress = currentSettings.SmtpAddress;
+                this.portNumber = currentSettings.SmtpPort;
+                this.password = currentSettings.SmtpPassword;
+                this.enableSSL = currentSettings.SSLEnabled;
+                this.emailFromAddress = currentSettings.EmailFrom;
+            }
+            this.To = to;
+>>>>>>> 41e62cf97c105b020e43661a26cb70d7630aeb28
             this.subject = subject;
             this.body = body;
             this.attachments = attachments;
@@ -49,8 +65,8 @@ public class MailService {
         public bool SendEmail() {  
             using(MailMessage mail = new MailMessage()) {  
                 mail.From = new MailAddress(emailFromAddress);  
-                foreach(var receiver in Receivers) {
-                    mail.To.Add(receiver);  
+                foreach(var receiver in To) {
+                    mail.To.Add(receiver); 
                 }
                 mail.Subject = subject;  
                 mail.Body = body;  
