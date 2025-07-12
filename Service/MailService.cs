@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Mail;
 using YamlDotNet.Serialization;
+using SendMail.Models;
 
 namespace SendMail {  
 public class MailService {  
@@ -13,7 +14,9 @@ public class MailService {
         private List<string> Receivers = new List<string>();
         private string subject = "";  
         private string body = "";  
-        public MailService(List<string> receivers, string subject, string body) 
+        private string attachments = "";
+
+        public MailService(List<string> receivers, string subject, string body, string attachments) 
         {
             var deserializer = new DeserializerBuilder()
                 .Build();
@@ -21,18 +24,28 @@ public class MailService {
             if (!File.Exists(settingsFile)) {
                 throw new Exception("Settings File does not exists.");
             }
-            using (var sr = File.OpenText(settingsFile)) {
-                MailSettings currentSettings = deserializer.Deserialize<MailSettings>(sr);
-                this.smtpAddress = currentSettings.SmtpAddress;
-                this.portNumber = currentSettings.SmtpPort;
-                this.password = currentSettings.SmtpPassword;
-                this.enableSSL = currentSettings.SSLEnabled;
-                this.emailFromAddress = currentSettings.EmailFrom;
-            }
+            using (StreamReader sr = File.OpenText(settingsFile)) {
+                try
+                {
+                    MailSettings currentSettings = deserializer.Deserialize<MailSettings>(sr);
+                    this.smtpAddress = currentSettings.SmtpAddress;
+                    this.portNumber = currentSettings.SmtpPort;
+                    this.password = currentSettings.SmtpPassword;
+                    this.enableSSL = currentSettings.SSLEnabled;
+                    this.emailFromAddress = currentSettings.EmailFrom;
+                }
+                catch (System.Exception ex)
+                {
+                    Console.WriteLine($"Error reading Yaml file: {ex.Message}\n{ex.StackTrace}\n{ex.InnerException}");
+                    throw ex;
+                }
+                            }
             this.Receivers = receivers;
             this.subject = subject;
             this.body = body;
+            this.attachments = attachments;
         }  
+
         public bool SendEmail() {  
             using(MailMessage mail = new MailMessage()) {  
                 mail.From = new MailAddress(emailFromAddress);  
@@ -42,7 +55,22 @@ public class MailService {
                 mail.Subject = subject;  
                 mail.Body = body;  
                 mail.IsBodyHtml = true;  
-                //mail.Attachments.Add(new Attachment("D:\\TestFile.txt"));//--Uncomment this to send any attachment  
+                if (!String.IsNullOrWhiteSpace(attachments)) {
+                    if (File.Exists(attachments) || Directory.Exists(attachments)) {
+
+                        Console.WriteLine("File found");
+                        var attr = File.GetAttributes(attachments);
+                        if ((attr & FileAttributes.Directory) == FileAttributes.Directory) {
+                            foreach(var file in Directory.GetFiles(attachments)) {
+                                mail.Attachments.Add(new Attachment(file));
+                            }
+                        } else {
+                            mail.Attachments.Add(new Attachment(attachments));
+                        }
+                    } else {
+                        Console.WriteLine($"The file {attachments} does not exists.");
+                    }
+                }
                 try 
                 {
                     using(SmtpClient smtp = new SmtpClient(smtpAddress, portNumber)) {  

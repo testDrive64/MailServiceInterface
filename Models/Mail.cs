@@ -1,4 +1,4 @@
-namespace MailServiceInterface;
+namespace SendMail.Models;
 
 /// <summary>
 /// Creates the Mail item
@@ -29,6 +29,7 @@ public class Mail
     /// that you use to define a list of E-Mail receivers.
     /// </remark>
     public List<string> Receivers { get; set; } = new List<string>();
+    public string Attachments { get; set; }
     public string? Subject { get; set; }
     public string? Body { get; set; }
 }

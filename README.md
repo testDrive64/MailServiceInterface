@@ -5,11 +5,11 @@
 - Create a MailSettings.yaml
 The file should look like this:
 ```
-- SmtpAddress: "smtp web address"
-  SmtpPassword: "App Password"
-  SmtpPort: port like [587]
-  SSLEnabled: true/false
-  EmailFrom: "Yout@mailAddress"
+SmtpAddress: "smtp web address"
+SmtpPassword: "App Password"
+SmtpPort: port like [587]
+SSLEnabled: true/false
+EmailFrom: "Yout@mailAddress"
 ```
 
 - In Terminal run command
