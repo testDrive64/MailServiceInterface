@@ -9,7 +9,7 @@ SmtpAddress: "smtp web address"
 SmtpPassword: "App Password"
 SmtpPort: port like [587]
 SSLEnabled: true/false
-EmailFrom: "Yout@mailAddress"
+EmailFrom: "Your@mailAddress"
 ```
 
 - In Terminal run command
