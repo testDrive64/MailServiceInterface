@@ -14,21 +14,15 @@ public class MailService {
         private List<string> To = new List<string>();
         private string subject = "";  
         private string body = "";  
-<<<<<<< HEAD
         private string attachments = "";
 
-        public MailService(List<string> receivers, string subject, string body, string attachments) 
-=======
-        public MailService(List<string> to, string subject, string body) 
->>>>>>> 41e62cf97c105b020e43661a26cb70d7630aeb28
+        public MailService(List<string> to, string subject, string body, string attachments) 
         {
-            var deserializer = new DeserializerBuilder()
-                .Build();
+            var deserializer = new DeserializerBuilder().Build();
             string settingsFile = "MailSettings.yaml";
             if (!File.Exists(settingsFile)) {
                 throw new Exception("Settings File does not exists.");
             }
-<<<<<<< HEAD
             using (StreamReader sr = File.OpenText(settingsFile)) {
                 try
                 {
@@ -45,18 +39,7 @@ public class MailService {
                     throw ex;
                 }
                             }
-            this.Receivers = receivers;
-=======
-            using (var sr = File.OpenText(settingsFile)) {
-                MailSettings currentSettings = deserializer.Deserialize<MailSettings>(sr);
-                this.smtpAddress = currentSettings.SmtpAddress;
-                this.portNumber = currentSettings.SmtpPort;
-                this.password = currentSettings.SmtpPassword;
-                this.enableSSL = currentSettings.SSLEnabled;
-                this.emailFromAddress = currentSettings.EmailFrom;
-            }
             this.To = to;
->>>>>>> 41e62cf97c105b020e43661a26cb70d7630aeb28
             this.subject = subject;
             this.body = body;
             this.attachments = attachments;
